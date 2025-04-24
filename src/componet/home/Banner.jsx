@@ -1,0 +1,80 @@
+import { useState } from "react";
+import { PlayCircle } from "lucide-react";
+import Modal from "react-modal";
+
+Modal.setAppElement('#root'); 
+
+function Banner() {
+   const [modalIsOpen, setModalIsOpen] = useState(false);
+
+   return (
+      <>
+         <div className="bg-white container mx-auto py-32 px-6  grid grid-cols-1 md:grid-cols-2 items-center gap-10">
+            <div className="space-y-6">
+               {/* Text Part */}
+               <p className="text-purple-700 font-semibold">
+                  ✨ স্বাগতম! আপনাকে পেয়ে আমরা আনন্দিত
+               </p>
+               <h1 className="text-3xl md:text-5xl font-bold leading-snug text-gray-900">
+                  আপনাকে দক্ষ করতে আপনার পাশে <br />
+                  <span className="text-purple-600">আহমাদ’স আইটি ইনস্টিটিউট</span>
+               </h1>
+               <p className="text-gray-700">
+                  আহমাদ’স আইটি ইনস্টিটিউট আপনার ক্যারিয়ার গড়ার নির্ভরযোগ্য ঠিকানা!
+               </p>
+               <div className="flex gap-4 flex-wrap">
+                  <button className="bg-purple-600 text-white px-6 py-3 rounded-xl hover:bg-purple-700 transition">
+                     সকল কোর্স দেখুন
+                  </button>
+                  <button className="border border-purple-600 text-purple-600 px-6 py-3 rounded-xl hover:bg-purple-100 transition">
+                     এখনই ভর্তি হন
+                  </button>
+               </div>
+            </div>
+
+            {/* Image & Play button */}
+            <div className="relative w-full max-w-xl mx-auto">
+               <img
+                  src="https://www.ahmadsit.com/uploads/1740550940_banner-img.jpg"
+                  alt="Institute students"
+                  className="rounded-xl shadow-md w-full"
+               />
+               <button
+                  onClick={() => setModalIsOpen(true)}
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white border-4 border-purple-600 rounded-full p-4 hover:scale-110 transition duration-300"
+               >
+                  <PlayCircle className="text-purple-600 w-10 h-10" />
+               </button>
+            </div>
+         </div>
+
+         {/* Modal */}
+         <Modal
+            isOpen={modalIsOpen}
+            onRequestClose={() => setModalIsOpen(false)}
+            contentLabel="YouTube Video"
+            className="w-full max-w-3xl mx-auto my-20 bg-white p-4 rounded-xl shadow-xl outline-none"
+            overlayClassName="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50"
+         >
+            <div className="relative w-full h-0 pb-[56.25%]">
+               <iframe
+                  className="absolute top-0 left-0 w-full h-full rounded"
+                  src="https://www.youtube.com/embed/XXXXXXXXXXX"
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+               ></iframe>
+            </div>
+            <button
+               onClick={() => setModalIsOpen(false)}
+               className="absolute top-2 right-4 text-gray-600 hover:text-red-500 text-xl font-bold"
+            >
+               ✕
+            </button>
+         </Modal>
+      </>
+   );
+}
+
+export default Banner;
