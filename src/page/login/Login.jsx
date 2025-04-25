@@ -1,10 +1,18 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { LockClosedIcon } from "@heroicons/react/20/solid";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; 
+import { AutContext } from "../../context";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"; // Import missing functions
+import { auth } from "../../componet/auth/firevase.config";
+
 
 function Login() {
+
+   const { singin } = useContext(AutContext);
+   const navgite = useNavigate();
+
    const {
       register,
       handleSubmit,
@@ -13,8 +21,37 @@ function Login() {
    const [showPassword, setShowPassword] = useState(false); 
 
    const onSubmit = (data) => {
-      console.log("✅ Logged In with:", data);
+      singin(data.email, data.password)
+         .then((reslt) => {
+            console.log(reslt);
+            navgite("/");
+           
+         }).catch((error) => {
+         console.log(error.message);
+         
+         })
+   
+      
    };
+
+   const googleSignIn = () => {
+      const provider = new GoogleAuthProvider();
+      return signInWithPopup(auth, provider); 
+   };
+
+
+
+   const handlerGoogle = () => {
+      googleSignIn()
+         .then((result) => {
+            console.log("Google sign-in success", result);
+            navgite("/");
+         })
+         .catch((error) => {
+            console.error("Google sign-in error:", error.message);
+         });
+      
+   }
 
    return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100/56 to-purple-200">
@@ -63,7 +100,15 @@ function Login() {
                >
                   Login
                </button>
+
+               
             </form>
+            <button
+               onClick={handlerGoogle}
+               className="w-full py-2 mt-4 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition"
+            >
+               Continue with Google
+            </button>
 
             <Link to={'/register'}>
                <p className="mt-4 text-center text-sm text-gray-500">

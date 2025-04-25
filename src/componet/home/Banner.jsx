@@ -53,7 +53,7 @@ function Banner() {
             isOpen={modalIsOpen}
             onRequestClose={() => setModalIsOpen(false)}
             contentLabel="YouTube Video"
-            className="w-full max-w-3xl mx-auto my-20 bg-white p-4 rounded-xl shadow-xl outline-none"
+            className="w-1/2 max-w-3xl mx-auto my-20 bg-white p-4 rounded-xl shadow-xl outline-none"
             overlayClassName="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50"
          >
             <div className="relative w-full h-0 pb-[56.25%]">

@@ -11,6 +11,8 @@ import AllHomeLayou from './layout/AllHomeLayou.jsx';
 import ErrorPage from './componet/home/ErrorPage.jsx';
 import Login from './page/login/Login.jsx';
 import Regsiter from './page/regster/Regsiter.jsx';
+import AuthProvider from './providaer/AuthProvider.jsx';
+import PrivateRoute from './page/regster/PrivateRoute.jsx';
 
 const router = createBrowserRouter([
   {
@@ -20,7 +22,13 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <AllHomeLayou />
+        index: true,
+        element:  <AllHomeLayou /> ,
+      },
+
+      {
+        path: "/signup",
+        element: <Login />
       },
 
       {
@@ -39,6 +47,10 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider >
+
+      <RouterProvider router={router} />
+    </AuthProvider>
+    
   </StrictMode>,
 )

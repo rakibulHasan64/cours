@@ -1,10 +1,19 @@
-import React, { useState } from 'react';
+import React, {  useContext, useState } from 'react';
 import { FiMenu } from "react-icons/fi";
 import { IoClose } from "react-icons/io5";
 import { NavLink } from 'react-router-dom';
+import { AutContext } from '../../context';
 
 function Naver() {
    const [togle, setTogle] = useState(false);
+   const { singOut, user } = useContext(AutContext);
+   console.log(user);
+   
+
+
+   const handleLogout = () => {
+      singOut()
+   }
 
    const handler = () => {
       setTogle(!togle);
@@ -16,19 +25,41 @@ function Naver() {
          : 'hover:text-blue-600';
 
    return (
+
+      
       <>
+         
+         
          <nav className='py-6 px-4 relative border-b-[1px] border-gray-400'>
             <div className="flex items-center container mx-auto justify-between">
                <div>
-                  <h1 className='text-3xl font-roboto'>It</h1>
+                  <h3 className="text-4xl font-extrabold font-sans text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 tracking-wide drop-shadow-lg">
+                     Next Skill Hub IT
+                  </h3>
+
                </div>
 
                <div className="hidden md:block">
                   <ul className='flex items-center gap-7 text-xl font-roboto'>
                      <li><NavLink to="/" className={navLinkClass}>হোম</NavLink></li>
                      <li><NavLink to="/about" className={navLinkClass}>আমাদের সম্পর্কে</NavLink></li>
-                     <li><NavLink to="/courses" className={navLinkClass}>কোর্সসমূহ</NavLink></li>
-                     <li><NavLink to="/success" className={navLinkClass}>সাফল্যের গল্প</NavLink></li>
+                     {
+                        user && (
+                           <>
+                              <li>
+                                 <NavLink to="/courses" className={navLinkClass}>
+                                    কোর্সসমূহ
+                                 </NavLink>
+                              </li>
+                              <li>
+                                 <NavLink to="/success" className={navLinkClass}>
+                                    সাফল্যের গল্প
+                                 </NavLink>
+                              </li>
+                           </>
+                        )
+                     }
+
                   </ul>
                </div>
 
@@ -41,11 +72,43 @@ function Naver() {
                   }>
                      Sign In
                   </NavLink>
-                  <NavLink to="/signup" className={({ isActive }) =>
-                     `text-lg font-bold font-roboto py-2 px-4 bg-green-600 rounded-xl ${isActive ? "text-white underline" : "text-white"}`
-                  }>
-                     Sign Up
-                  </NavLink>
+                  {
+                     user ? (
+                        <div className="flex items-center gap-4">
+                           <button className="rounded-full overflow-hidden">
+                              <img
+                                 src={user?.photoURL || "/default-avatar.png"}          // <-- এখানে ফালব্যাক
+                                 alt="User Profile"
+                                 onError={(e) => {                                     // <-- যদি URL ভুল হয়
+                                    e.currentTarget.onerror = null;                     // prevent infinite loop
+                                    e.currentTarget.src = "/default-avatar.png";        // দ্বিতীয় বার ফেইল করলে আর ট্রাই করবে না
+                                 }}
+                                 className="w-10 h-10 rounded-full object-cover"
+                              />
+                           </button>
+
+
+                           <button
+                              onClick={handleLogout}
+                              className="text-lg font-bold font-roboto py-2 px-4 bg-red-600 rounded-xl text-white"
+                           >
+                              Log Out
+                           </button>
+                        </div>
+                     ) : (
+                        <NavLink
+                           to="/signup"
+                           className={({ isActive }) =>
+                              `text-lg font-bold font-roboto py-2 px-4 bg-green-600 rounded-xl ${isActive ? "text-white underline" : "text-white"
+                              }`
+                           }
+                        >
+                           Sign Up
+                        </NavLink>
+                     )
+                  }
+
+
                </div>
 
                <div onClick={handler} className="text-2xl block md:hidden">
