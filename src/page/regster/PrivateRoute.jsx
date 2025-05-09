@@ -1,19 +1,22 @@
 import {  useContext } from "react";
 import { AutContext } from "../../context";
-import { Navigate } from "react-router";
+import { Navigate, useLocation } from "react-router";
 
 
 function PrivateRoute({Children}) {
   
 
-   const {user}=useContext(AutContext)
+   const { user } = useContext(AutContext);
+   const location = useLocation();
+
+
    
    
     if (user) {
        return Children;
    }
    
-   return <Navigate to={"/signup"}></Navigate>
+   return <Navigate state={location.pathname} to={"/signup"}></Navigate>
 }
 
 export default PrivateRoute;

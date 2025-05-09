@@ -1,12 +1,13 @@
 import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { AtSymbolIcon, KeyIcon, UserIcon } from "@heroicons/react/24/solid";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AutContext } from "../../context";
 
 function Register() {
 
-   const { creatuser }=useContext(AutContext)
+   const { creatuser } = useContext(AutContext);
+   const navget = useNavigate();
    const { register, handleSubmit, formState: { errors } } = useForm();
 
    const onSubmit = (data) => {
@@ -14,6 +15,7 @@ function Register() {
       creatuser(data.email, data.password)
          .then(result => {
             console.log(result.user);
+            navget("/")
             
          
          }).catch(error => {

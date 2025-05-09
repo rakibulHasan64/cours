@@ -1,8 +1,10 @@
 import React from 'react';
 import Naver from './Naver';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 
 function ErrorPage() {
+
+   const navigate = useNavigate();
    return (
       <>
          <Naver />
@@ -17,12 +19,12 @@ function ErrorPage() {
                আপনি যে পেজটি খুঁজছেন তা আমাদের কাছে নেই। দুঃখিত!
             </p>
             <div className="flex gap-4 flex-wrap justify-center">
-               <Link
-                  to="/"
+               <button
+                  onClick={() => navigate(-1)}
                   className="bg-purple-600 text-white px-6 py-3 rounded-xl hover:bg-purple-700 transition"
                >
                   হোম পেজে ফিরে যান
-               </Link>
+               </button>
             </div>
          </div>
       </>

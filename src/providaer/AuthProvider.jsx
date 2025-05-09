@@ -6,8 +6,8 @@ import { GoogleAuthProvider } from "firebase/auth/web-extension";
 
 
 function AuthProvider({ children }) {
-
-   const [user, serUser] = useState(null);
+   const [isAdmin, setIsAdmin] = useState(false);
+   const [user, setUser] = useState(null);
    const creatuser = (email, password) => {
       return createUserWithEmailAndPassword(auth, email, password);
    };
@@ -28,21 +28,43 @@ function AuthProvider({ children }) {
    };
 
     
+   // useEffect(() => {
+   //    const usnscribe= onAuthStateChanged(auth, (currentUser) => {
+   //       if (currentUser) {
+   //          console.log(currentUser);
+   //          serUser(currentUser)
+
+   //       } else {
+   //          serUser(null)
+   //       }
+   //    });
+
+   //    return () =>{
+   //       usnscribe();
+   //    }
+   // },[])
+
+
    useEffect(() => {
-      const usnscribe= onAuthStateChanged(auth, (currentUser) => {
+      const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
          if (currentUser) {
-            console.log(currentUser);
-            serUser(currentUser)
+            setUser(currentUser);
+
+            // Admin check
+            if (currentUser.email === "fasterhasan0@gmail.com") {
+               setIsAdmin(true);
+            } else {
+               setIsAdmin(false);
+            }
 
          } else {
-            serUser(null)
+            setUser(null);
+            setIsAdmin(false);
          }
       });
 
-      return () =>{
-         usnscribe();
-      }
-   },[])
+      return () => unsubscribe();
+   }, []);
    
    const authIfo = {
       creatuser,
@@ -50,6 +72,7 @@ function AuthProvider({ children }) {
       user,
       singOut,
       googleSignIn,
+      isAdmin,
    }
    return (
       <AutContext.Provider value={authIfo}>

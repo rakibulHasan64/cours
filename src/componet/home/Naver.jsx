@@ -7,7 +7,7 @@ import { AutContext } from '../../context';
 function Naver() {
    const [togle, setTogle] = useState(false);
    const { singOut, user } = useContext(AutContext);
-   console.log(user);
+
    
 
 
@@ -76,7 +76,7 @@ function Naver() {
                      user ? (
                         <div className="flex items-center gap-4">
                            <button className="rounded-full overflow-hidden">
-                              <img
+                              {/* <img
                                  src={user?.photoURL || "/default-avatar.png"}          // <-- এখানে ফালব্যাক
                                  alt="User Profile"
                                  onError={(e) => {                                     // <-- যদি URL ভুল হয়
@@ -84,7 +84,7 @@ function Naver() {
                                     e.currentTarget.src = "/default-avatar.png";        // দ্বিতীয় বার ফেইল করলে আর ট্রাই করবে না
                                  }}
                                  className="w-10 h-10 rounded-full object-cover"
-                              />
+                              /> */}
                            </button>
 
 

@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { LockClosedIcon } from "@heroicons/react/20/solid";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; 
 import { AutContext } from "../../context";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"; // Import missing functions
@@ -13,6 +13,9 @@ function Login() {
    const { singin } = useContext(AutContext);
    const navgite = useNavigate();
 
+   const location = useLocation();
+
+
    const {
       register,
       handleSubmit,
@@ -20,19 +23,43 @@ function Login() {
    } = useForm();
    const [showPassword, setShowPassword] = useState(false); 
 
-   const onSubmit = (data) => {
-      singin(data.email, data.password)
-         .then((reslt) => {
-            console.log(reslt);
-            navgite("/");
+   // const onSubmit = (data) => {
+   //    singin(data.email, data.password)
+   //       .then((reslt) => {
+   //          console.log(reslt);
+   //          navgite(`${location.state ? location.state : "/"}`);
            
-         }).catch((error) => {
-         console.log(error.message);
+   //       }).catch((error) => {
+   //          console.log(error.message);
+   //          alert(error.message);
          
-         })
+   //       })
    
       
+   // };
+    
+
+   const onSubmit = (data) => {
+      singin(data.email, data.password)
+         .then((result) => {
+            const email = result.user.email;
+
+            // Admin check
+            if (email === "fasterhasan0@gmail.com") {
+               navgite("/admin-dashboard");
+            } else {
+               navgite("/");
+            }
+
+         })
+         .catch((error) => {
+            console.error(error.message);
+            alert(error.message);
+         });
    };
+
+
+
 
    const googleSignIn = () => {
       const provider = new GoogleAuthProvider();
@@ -41,17 +68,35 @@ function Login() {
 
 
 
+   // const handlerGoogle = () => {
+   //    googleSignIn()
+   //       .then((result) => {
+   //          console.log("Google sign-in success", result);
+   //          navgite("/");
+   //       })
+   //       .catch((error) => {
+   //          console.error("Google sign-in error:", error.message);
+   //       });
+      
+   // }
+
    const handlerGoogle = () => {
       googleSignIn()
          .then((result) => {
-            console.log("Google sign-in success", result);
-            navgite("/");
+            const email = result.user.email;
+            // if (email === "admin@gmail.com") {
+            //    navgite("/admin-dashboard");
+            // } else {
+            //    
+            // }
+            
+            navgite("/user-dashboard");
          })
          .catch((error) => {
             console.error("Google sign-in error:", error.message);
          });
-      
-   }
+   };
+
 
    return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100/56 to-purple-200">
